@@ -18,11 +18,6 @@ public class CharacterMover : MonoBehaviour
     Animator anim;
     public GameObject Player;
     private bool facingRight = true;
-    private bool isOnGround;
-    public Transform groundcheck;
-    public float checkRadius;
-    public float jumpForce;
-    public LayerMask allGround;
     public AudioClip musicClipOne;
     public AudioClip musicClipTwo;
     public AudioSource musicSource;
@@ -48,7 +43,6 @@ public class CharacterMover : MonoBehaviour
         float moveVertical = Input.GetAxis("Vertical");
 
         rd2d.AddForce(new Vector2(moveHorizontal * speed, moveVertical * speed));
-        isOnGround = Physics2D.OverlapCircle(groundcheck.position, checkRadius, allGround);
 
         if (Input.GetKey("escape"))
         {
@@ -64,20 +58,6 @@ public class CharacterMover : MonoBehaviour
             Flip();
         }
 
-        if (isOnGround == false)
-        {
-            anim.SetInteger("State", 2);
-        }
-
-        if ((isOnGround == true) && (moveVertical == 0))
-        {
-            anim.SetInteger("State", 0);
-        }
-
-        if ((isOnGround == true) && (moveHorizontal > 0))
-        {
-            anim.SetInteger("State", 0);
-        }
     }
 
     void Flip()
@@ -134,11 +114,11 @@ public class CharacterMover : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if(collision.collider.tag == "Ground" && isOnGround)
+        if(collision.collider.tag == "Ground")
         {
             if(Input.GetKey(KeyCode.W))
             {
-                rd2d.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+                rd2d.AddForce(new Vector2(0, 3), ForceMode2D.Impulse);
                 anim.SetInteger("State", 2);
             }
         }
