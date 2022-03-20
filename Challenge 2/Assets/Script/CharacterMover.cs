@@ -52,7 +52,7 @@ public class CharacterMover : MonoBehaviour
 
         if (Input.GetKey("escape"))
         {
-        Application.Quit();
+            Application.Quit();
         }
 
         if (facingRight == false && moveHorizontal > 0)
@@ -64,24 +64,21 @@ public class CharacterMover : MonoBehaviour
             Flip();
         }
 
+        if (isOnGround == false)
         {
-            if (isOnGround == false)
-
-            {
-
-                anim.SetInteger("State", 2);
-
-            }
-
-            if ((Input.GetKeyDown(KeyCode.A)) && (isOnGround))
-
-            {
-
-                anim.SetInteger("State", 1);
-
-            }
+            anim.SetInteger("State", 2);
         }
-}
+
+        if ((isOnGround == true) && (moveVertical == 0))
+        {
+            anim.SetInteger("State", 0);
+        }
+
+        if ((isOnGround == true) && (moveHorizontal > 0))
+        {
+            anim.SetInteger("State", 0);
+        }
+    }
 
     void Flip()
     {
